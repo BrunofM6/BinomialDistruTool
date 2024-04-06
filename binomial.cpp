@@ -41,11 +41,11 @@ double combination(double n, double k){
   return factorial(k) / (factorial(n) * factorial(k - n));
 }
 // n -> sucessful chances , k -> total chances
-double bynomial(double n, double k){
+double binomial(double n, double k){
   return combination(n, k) * power(success, n) * power(1 - success, k - n);
 }
 
-void bynomial_parsed(std::string filename){
+void binomial_parsed(std::string filename){
   std::string filePath = "data/" + filename, line, ch;
   std::ifstream file(filePath);
   if (!file.is_open()) {
@@ -70,13 +70,13 @@ void bynomial_parsed(std::string filename){
     success = S / (S + F);
   }
 }
-double bynomial_interval(double n1, double n2, double k){
+double binomial_interval(double n1, double n2, double k){
   if(n1 > n2){
     std::cout << "Invalid interval.\n";
   }
   double p = 0.0;
   for(; n1 <= n2; n1++){
-    p += bynomial(n1, k);
+    p += binomial(n1, k);
   }
   return p;
 }
@@ -84,6 +84,7 @@ int main(){
   uint c;
   std::cout << "If you don't understand how to use this tool or what it is for go to the README.\n";
   while(c != 0){
+    std::cout << "========== BinomialDistribuTool ==========\n";
     std::cout << "What do you want to do?\n";
     std::cout << "1. Outsource file with data for me to calculate the odds?\n";
     std::cout << "2. Provide me with the odds of success?\n";
@@ -97,7 +98,7 @@ int main(){
       std::cout << "The file needs to be inside data folder and in the format of a success/failure ('S'/'F') character, followed by a separator (','), followed by another character and so on.\n";
       std::cout << "Path File : ";
       std::cin >> path;
-      bynomial_parsed(path);
+      binomial_parsed(path);
       std::cout << "The updated success rate is: " << success << '\n';
       continue;
     }
@@ -112,7 +113,7 @@ int main(){
       std::cin >> n;
       std::cout << "What is k? ";
       std::cin >> k;
-      std::cout << "The probability of said n of k using the current odds is: " << bynomial(n, k) << std::endl;
+      std::cout << "The probability of said n of k using the current odds is: " << binomial(n, k) << std::endl;
       continue;
     }
     if(c == 4){
@@ -123,8 +124,11 @@ int main(){
       std::cin >> n2;
       std::cout << "What is k? ";
       std::cin >> k;
-      std::cout << "The probability of said n interval of k using the current odds is: " << bynomial_interval(n1, n2, k) << std::endl;
+      std::cout << "The probability of said n interval of k using the current odds is: " << binomial_interval(n1, n2, k) << std::endl;
       continue;
+    }
+    if(c == 5){
+      std::cout << "Current success chance is: " << success << std::endl;
     }
   }
   return 0;
